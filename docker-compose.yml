@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  msvc-usuarios:
+    build:
+      context: ./msvc-usuarios
+    ports:
+      - "8001:8001"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://msvc-usuarios-db:3306/appdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+    depends_on:
+      - msvc-usuarios-db
+
+  msvc-cursos:
+    build:
+      context: ./msvc-cursos
+    ports:
+      - "8002:8002"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://msvc-cursos-db:5432/appdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123456
+    depends_on:
+      - msvc-cursos-db
+
+  msvc-usuarios-db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: appdb
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+
+  msvc-cursos-db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: appdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
